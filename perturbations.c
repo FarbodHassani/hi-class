@@ -5063,7 +5063,8 @@ int perturb_timescale(
  * @param ppw        Input/Output: in output contains the updated metric perturbations
  * @return the error status
  */
-
+// Here Kessence cout file is added! FH
+//In the begining
 int perturb_einstein(
                      struct precision * ppr,
                      struct background * pba,
@@ -5086,6 +5087,11 @@ int perturb_einstein(
   double l1=0, l2=0, l3=0, l4=0, l5=0, l6=0, l7=0, l8=0;
   double M2=0, kin=0, bra=0, run=0, ten=0;
   double rho_tot=0, p_tot=0, rho_smg=0, p_smg=0, H=0;
+  // char kessenceF[40];
+
+  // delta_scf = delta_rho_scf/pvecback[pba->index_bg_rho_scf];
+  // theta_scf = rho_plus_p_theta_scf/(pvecback[pba->index_bg_rho_scf]+pvecback[pba->index_bg_p_scf]);
+
 
   /** - wavenumber and scale factor related quantities */
 
@@ -5094,6 +5100,11 @@ int perturb_einstein(
   a2 = a * a;
   a_prime_over_a = ppw->pvecback[pba->index_bg_H]*a;
   s2_squared = 1.-3.*pba->K/k2;
+
+  // printf("FH   sIM HERE");
+
+
+
 
   /* sum up perturbations from all species */
   class_call(perturb_total_stress_energy(ppr,pba,pth,ppt,index_md,k,y,ppw),
@@ -5149,7 +5160,6 @@ int perturb_einstein(
 	bra = ppw->pvecback[pba->index_bg_braiding_smg];
 	run = ppw->pvecback[pba->index_bg_mpl_running_smg];
 	ten = ppw->pvecback[pba->index_bg_tensor_excess_smg];
-
 	rho_tot = ppw->pvecback[pba->index_bg_rho_tot_wo_smg];
 	p_tot = ppw->pvecback[pba->index_bg_p_tot_wo_smg];
 	rho_smg = ppw->pvecback[pba->index_bg_rho_smg];
@@ -5172,10 +5182,20 @@ int perturb_einstein(
 
 	/* write here the values, as taken from the integration */
 	ppw->pvecmetric[ppw->index_mt_vx_smg] = y[ppw->pv->index_pt_vx_smg];
-	  ppw->pvecmetric[ppw->index_mt_vx_prime_smg] = y[ppw->pv->index_pt_vx_prime_smg];
+	ppw->pvecmetric[ppw->index_mt_vx_prime_smg] = y[ppw->pv->index_pt_vx_prime_smg];
 
 	/* scalar field equation */
 	ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg] = (-2.)*pow((-2.) + bra,-1)*cs2num*pow(H,-1)*pow(D,-1)*pow(k,2)*y[ppw->pv->index_pt_eta]*pow(a,-1) + (-3.)*pow((-2.) + bra,-1)*pow(H,-1)*pow(D,-1)*l2*pow(M2,-1)*ppw->delta_rho*a + (-9.)/2.*bra*pow(H,-1)*pow(D,-1)*pow(M2,-1)*ppw->delta_p*a + 8.*pow((-2.) + bra,-1)*H*pow(D,-1)*l7*ppw->pvecmetric[ppw->index_mt_vx_prime_smg]*a + (cs2num*pow(k,2) + (-4.)*pow(H,2)*l8*pow(a,2))*2.*pow((-2.) + bra,-1)*pow(D,-1)*ppw->pvecmetric[ppw->index_mt_vx_smg];
+  if (fabs(a-0.01)<0.00001)
+  {
+    double alpha = 1.0;
+    double pinewton = y[ppw->pv->index_pt_vx_smg]+alpha*0.0;
+    double piprimen = y[ppw->pv->index_pt_vx_prime_smg];
+    double pidprimn = ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg];
+     FILE * out=fopen("./output/Kessence.dat","a");
+     fprintf(out,"%e\t%e\t%e\t%e\t%e\n",k,a,pinewton,piprimen,pidprimn);
+     fclose(out);
+   }
 
 	class_test(isnan(ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg]),
 		   ppt->error_message,
@@ -5339,6 +5359,9 @@ int perturb_einstein(
 
   }
 
+
+
+
   if (_tensors_) {
 
     /* single einstein equation for tensor perturbations */
@@ -5355,11 +5378,21 @@ int perturb_einstein(
       ppw->pvecmetric[ppw->index_mt_gw_prime_prime] = -(2. + run)*a_prime_over_a*y[ppw->pv->index_pt_gwdot]-k2*c_t2*y[ppw->pv->index_pt_gw]+ppw->gw_source/M2;
     }
 
+    // fprintf(out,"k: ",k2);
+    // fprintf(ppw->perturb_output_file," ");
+// ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg]
   }
+
+//End FH
+
+
 
   return _SUCCESS_;
 
 }
+
+
+
 
 int perturb_total_stress_energy(
                                 struct precision * ppr,
@@ -5818,9 +5851,12 @@ int perturb_total_stress_energy(
 
       }
     }
+
   }
 
   return _SUCCESS_;
+
+
 }
 
 /**
