@@ -3256,6 +3256,7 @@ int spectra_output_tk_titles(struct background *pba,
       class_store_columntitle(titles,"d_b",_TRUE_);
       class_store_columntitle(titles,"d_cdm",pba->has_cdm);
       class_store_columntitle(titles,"d_fld",pba->has_fld);
+      class_store_columntitle(titles,"d_smg",pba->has_smg);
       class_store_columntitle(titles,"d_ur",pba->has_ur);
       if (pba->has_ncdm == _TRUE_) {
         for (n_ncdm=0; n_ncdm < pba->N_ncdm; n_ncdm++) {
@@ -3273,6 +3274,7 @@ int spectra_output_tk_titles(struct background *pba,
       class_store_columntitle(titles,"t_b",_TRUE_);
       class_store_columntitle(titles,"t_cdm",((pba->has_cdm == _TRUE_) && (ppt->gauge != synchronous)));
       class_store_columntitle(titles,"t_fld",pba->has_fld);
+      class_store_columntitle(titles,"t_smg",pba->has_smg);
       class_store_columntitle(titles,"t_ur",pba->has_ur);
       if (pba->has_ncdm == _TRUE_) {
         for (n_ncdm=0; n_ncdm < pba->N_ncdm; n_ncdm++) {
