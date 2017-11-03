@@ -5206,7 +5206,7 @@ int perturb_einstein(
   //Some notes:
   //.//source/background.c:      double Omega = exp(alpha_M0*pow(a, beta)/beta)-1;
   //
-  
+
  // Printing the fields
  // if (fabs(a-0.01)<0.001)
  // {
@@ -5233,13 +5233,13 @@ int perturb_einstein(
     double pi_newton = ppw->pvecmetric[ppw->index_mt_vx_smg]+ppw->pvecmetric[ppw->index_mt_alpha]; // scalar field in Newtonian gauge --> Gauge transformation: pi(Newt)=pi(Sync)+ alpha
     double pi_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_smg]+ppw->pvecmetric[ppw->index_mt_alpha_prime];
     double pi_prime_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg] ; // We take alpha_prime_prime=0 in the begining
-    double h_prime_prime=ppw->pvecmetric[ppw->index_mt_h_prime_prime]
+    double h_prime_prime=ppw->pvecmetric[ppw->index_mt_h_prime_prime];
     // double pinewton = y[ppw->pv->index_pt_vx_smg]+alpha*0.0;
     // double piprimen = y[ppw->pv->index_pt_vx_prime_smg];
     // double pidprimn = ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg];
-     FILE * out=fopen("./output/Kessence_icheck.dat","a");
+     FILE * out=fopen("./output/Kessence_check.dat","a");
      //Test for h, We expect h'' be constant in Matter dominated era!
-     fprintf(out,"%e\t%e\t%e\t%e\t%e\t%e\n",k,a,h_prime_prime);
+     fprintf(out,"%e\t%e\t%e\t \n",k,a,h_prime_prime);
     //  fprintf(out,"%e\t%e\t%e\t%e\t%e\t%e\n",k,a, ,ppw->pvecmetric[ppw->index_mt_h_prime_prime],ppw->pvecmetric[ppw->index_mt_alpha],ppw->pvecmetric[ppw->index_mt_alpha_prime],pi_newton,pi_prime_newton,pi_prime_prime_newton,rho_smg,ppw->pvecmetric[ppw->index_mt_alpha],pv->index_pt_eta);
 
      fclose(out);
