@@ -5165,6 +5165,8 @@ int perturb_einstein(
 	p_smg = ppw->pvecback[pba->index_bg_p_smg];
 
 	H = ppw->pvecback[pba->index_bg_H];
+  H_dot=ppw->pvecback[pba->index_bg_H_prime];
+  H_dot_dot=ppw->pvecback[pba->index_bg_H_prime_prime];
 
 	l1 = ppw->pvecback[pba->index_bg_lambda_1_smg];
 	l2 = ppw->pvecback[pba->index_bg_lambda_2_smg];
@@ -5228,18 +5230,21 @@ int perturb_einstein(
 
   // Checking the approximations
   //loop to take the scalar field and the derivatives in each k  over a redshift bins (FH)
-  if (fabs(a-0.01)<0.001)
+  if (fabs(k-0.09026741)<0.01)
   {
     double pi_newton = ppw->pvecmetric[ppw->index_mt_vx_smg]+ppw->pvecmetric[ppw->index_mt_alpha]; // scalar field in Newtonian gauge --> Gauge transformation: pi(Newt)=pi(Sync)+ alpha
     double pi_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_smg]+ppw->pvecmetric[ppw->index_mt_alpha_prime];
     double pi_prime_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg] ; // We take alpha_prime_prime=0 in the begining
+    double h_prime_prime=ppw->pvecmetric[ppw->index_mt_h_prime_prime];
+    double h_prime_prime=ppw->pvecmetric[ppw->index_mt_h_prime_prime];
+
     double h_prime_prime=ppw->pvecmetric[ppw->index_mt_h_prime_prime];
     // double pinewton = y[ppw->pv->index_pt_vx_smg]+alpha*0.0;
     // double piprimen = y[ppw->pv->index_pt_vx_prime_smg];
     // double pidprimn = ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg];
      FILE * out=fopen("./output/Kessence_check.dat","a");
      //Test for h, We expect h'' be constant in Matter dominated era!
-     fprintf(out,"%e\t%e\t%e\t \n",k,a,h_prime_prime);
+     fprintf(out,"%e\t%e\t%e\t %e\t %e\t \n",k,a,H_dot,H_dot_dot,h_prime_prime);
     //  fprintf(out,"%e\t%e\t%e\t%e\t%e\t%e\n",k,a, ,ppw->pvecmetric[ppw->index_mt_h_prime_prime],ppw->pvecmetric[ppw->index_mt_alpha],ppw->pvecmetric[ppw->index_mt_alpha_prime],pi_newton,pi_prime_newton,pi_prime_prime_newton,rho_smg,ppw->pvecmetric[ppw->index_mt_alpha],pv->index_pt_eta);
 
      fclose(out);
