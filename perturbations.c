@@ -5164,9 +5164,9 @@ int perturb_einstein(
 	rho_smg = ppw->pvecback[pba->index_bg_rho_smg];
 	p_smg = ppw->pvecback[pba->index_bg_p_smg];
 
-	H = ppw->pvecback[pba->index_bg_H];
-  H_dot=ppw->pvecback[pba->index_bg_H_prime];
-  H_dot_dot=ppw->pvecback[pba->index_bg_H_prime_prime];
+	double H = ppw->pvecback[pba->index_bg_H];
+  double H_dot=ppw->pvecback[pba->index_bg_H_prime];
+  double H_dot_dot=ppw->pvecback[pba->index_bg_H_prime_prime];
 
 	l1 = ppw->pvecback[pba->index_bg_lambda_1_smg];
 	l2 = ppw->pvecback[pba->index_bg_lambda_2_smg];
