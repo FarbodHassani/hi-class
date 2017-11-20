@@ -5094,7 +5094,6 @@ int perturb_einstein(
 
 
   /** - wavenumber and scale factor related quantities */
-
   k2 = k*k;
   a = ppw->pvecback[pba->index_bg_a];
   a2 = a * a;
@@ -5164,9 +5163,13 @@ int perturb_einstein(
 	rho_smg = ppw->pvecback[pba->index_bg_rho_smg];
 	p_smg = ppw->pvecback[pba->index_bg_p_smg];
 
-	double H = ppw->pvecback[pba->index_bg_H];
-  double H_dot=ppw->pvecback[pba->index_bg_H_prime];
-  double H_dot_dot=ppw->pvecback[pba->index_bg_H_prime_prime];
+// double H = ppw->pvecback[pba->index_bg_H];
+H = ppw->pvecback[pba->index_bg_H];
+
+
+
+double H_dot=ppw->pvecback[pba->index_bg_H_prime];
+double H_dot_dot=ppw->pvecback[pba->index_bg_H_prime_prime];
 
 	l1 = ppw->pvecback[pba->index_bg_lambda_1_smg];
 	l2 = ppw->pvecback[pba->index_bg_lambda_2_smg];
@@ -5215,20 +5218,29 @@ int perturb_einstein(
   // We really do not need it since we dont need \pi_dot_dot from hi-class!!
 
  // Printing the fields
- if (fabs(a-0.01)<0.001)
+ if (fabs(a-1./(101.))<0.003)
  {
-  // double h_prime_prime=ppw->pvecmetric[ppw->index_mt_h_prime_prime];
-   double pi_newton = ppw->pvecmetric[ppw->index_mt_vx_smg]+ppw->pvecmetric[ppw->index_mt_alpha]; // scalar field in Newtonian gauge --> Gauge transformation: pi(Newt)=pi(Sync)+ alpha
-   double pi_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_smg]+ppw->pvecmetric[ppw->index_mt_alpha_prime];
-  //  double pi_prime_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg]+36.*H_dot_dot*h_prime_prime  ; // We take alpha_prime_prime=36 H'' * h'' and we neglect H'''
-   // double pinewton = y[ppw->pv->index_pt_vx_smg]+alpha*0.0;
-   // double piprimen = y[ppw->pv->index_pt_vx_prime_smg];
-   // double pidprimn = ppw->pvecmetric[ppw->index_mt_vx_prime_prime_smg];
-    FILE * out1=fopen("./output/Kessence_fields.dat","a");
-    fprintf(out1,"%e\t%e\t%e\n",k,ppw->pvecmetric[ppw->index_mt_alpha],ppw->pvecmetric[ppw->index_mt_vx_smg]);
+   /**K is 1/Mpc */
 
-    // fprintf(out1,"%e\t%e\t%e\t%e\t%e \t%e\n",k,a,pi_newton,pi_prime_newton,pi_prime_prime_newton);
-    fclose(out1);
+    if(fabs(k-0.07318834)<1){
+      double rho_field=ppw->pvecback[pba->index_bg_rho_smg];
+      double pi_newton = ppw->pvecmetric[ppw->index_mt_vx_smg] + ppw->pvecmetric[ppw->index_mt_alpha]; // scalar field in Newtonian gauge --> Gauge transformation: pi(Newt)=pi(Sync)+ alpha
+      double pi_prime_newton=ppw->pvecmetric[ppw->index_mt_vx_prime_smg] + ppw->pvecmetric[ppw->index_mt_alpha_prime];
+      // fprintf(stdout,"%e\t %e\t %e\t \n",rho_field,H,pi_newton );
+      double psi_Sync = ppw->pvecmetric[ppw->index_mt_alpha_prime] + H*ppw->pvecmetric[ppw->index_mt_alpha];
+      double deltarho_smg_Newt = 0.1*(pi_prime_newton- psi_Sync); // scalar field in Newtonian gauge --> Gauge transformation: pi(Newt)=pi(Sync)+ alpha
+      // double deltarho_smg_Sync =deltarho_smg_Newt - ppw->pvecmetric[ppw->index_mt_alpha]*(1.1); // scalar field in Newtonian gauge --> Gauge transformation: pi(Newt)=pi(Sync)+ alpha
+
+
+       FILE * out1=fopen("./output/Kessence_fields.dat","a");
+      //  FILE * out2=fopen("./output/alpha_hi.dat","a");
+    // fprintf(out2,"%e\t %e\t %e\t  \n",k,a,ppw->pvecmetric[ppw->index_mt_alpha]);
+   fprintf(out1,"%e\t %e\t %e\t %e\t %e\t %e\t %e\t %e\t \n",k, a, deltarho_smg_Newt, pi_newton, pi_prime_newton, psi_Sync, ppw->pvecmetric[ppw->index_mt_alpha], ppw->pvecmetric[ppw->index_mt_alpha_prime]);
+  //  fprintf(out2,"%e\t%e\t%e\t%e\t%e\t \n",k,a,ppw->pvecmetric[ppw->index_mt_alpha],ppw->pvecmetric[ppw->index_mt_vx_smg],pi_newton);
+
+   fclose(out1);
+  //  fclose(out2);
+ }
    // fprintf(stdout,"%e\t%e\t%e\n",k,ppw->pv->index_pt_vx_smg,ppw->pvecmetric[ppw->index_mt_vx_smg],);
   }
 
